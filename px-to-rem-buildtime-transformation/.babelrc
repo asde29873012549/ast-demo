@@ -1,0 +1,17 @@
+{
+    "presets": ["next/babel"],
+    "plugins": [
+      [
+        "styled-components-px2rem",
+        {
+          "rootValue": 3.75,
+          "unitPrecision": 5,
+          "minPixelValue": 0,
+          "multiplier": 1,
+          "transformRuntime": true
+        }
+      ],
+      ["styled-components", { "ssr": true, "displayName": true }]
+    ]
+  }
+  

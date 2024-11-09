@@ -1,0 +1,29 @@
+{
+  "name": "babel-plugin-styled-components-px2rem",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "@babel/core": "^7.26.0",
+    "postcss": "^8.4.47"
+  },
+  "dependencies": {
+    "@babel/helper-plugin-utils": "^7.25.9",
+    "postcss-pxtorem": "^6.1.0",
+    "postcss-scss": "^4.0.9"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/template": "^7.25.9",
+    "@babel/traverse": "^7.25.9",
+    "@babel/types": "^7.26.0",
+    "eslint-config-prettier": "^9.1.0",
+    "postcss": "^8.4.47",
+    "prettier": "^3.3.3"
+  }
+}

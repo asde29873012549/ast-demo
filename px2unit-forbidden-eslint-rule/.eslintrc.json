@@ -1,0 +1,18 @@
+{
+  "plugins": ["prettier", "local-rules"],
+  // You might want to additionally set this in monorepos where Next.js app is in a subdir
+  "root": true,
+  "extends": ["next/core-web-vitals"],
+  "rules": {
+    "local-rules/no-px2unit": "error"
+  },
+  "overrides": [
+    {
+      "files": ["*.js", "*.mjs", "*.jsx"],
+      "parser": "espree",
+      "parserOptions": {
+        "ecmaVersion": "latest"
+      }
+    }
+  ]
+}

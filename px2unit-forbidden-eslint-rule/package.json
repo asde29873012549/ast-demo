@@ -1,0 +1,30 @@
+{
+  "name": "px2unit-px-migration",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3004",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "next": "13.5.7",
+    "react": "^18",
+    "react-dom": "^18",
+    "styled-components": "^6.1.13"
+  },
+  "devDependencies": {
+    "@babel/generator": "^7.26.2",
+    "@babel/parser": "^7.26.2",
+    "@babel/traverse": "^7.25.9",
+    "@babel/types": "^7.26.0",
+    "eslint": "^8",
+    "eslint-config-next": "13.5.7",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-local-rules": "^3.0.2",
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.3.3"
+  }
+}

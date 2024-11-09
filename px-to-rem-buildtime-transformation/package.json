@@ -1,0 +1,23 @@
+{
+  "name": "px-to-rem-buildtime-transformation",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3003",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "13.5.7",
+    "react": "^18",
+    "react-dom": "^18",
+    "styled-components": "^6.1.13"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^2.1.4",
+    "eslint": "^8",
+    "eslint-config-next": "13.5.7",
+    "postcss": "^8.4.47"
+  }
+}
