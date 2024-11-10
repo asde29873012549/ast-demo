@@ -5,7 +5,9 @@ A base Next.js 13 project configured with styled-components, serving as the foun
 ## Features
 - Next.js 13
 - styled-components
-- Basic responsive rem setup
+- Responsive design implemented with:
+  - Dynamic HTML root font-size based on the screen width
+  - All size values are in `rem` to get the responsiveness from the root font-size
 - Sample profile card component
 
 ## Setup
@@ -27,6 +29,6 @@ The server will start at http://localhost:3001
 
 ## Usage
 This project serves as a starting point for other AST transformation demos. It includes:
-- Basic responsive rem calculation
+- Responsive rem calculation
 - px2Unit utility function for runtime px-to-rem conversion
 - Sample styled-components implementation

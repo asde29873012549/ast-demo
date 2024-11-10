@@ -1,12 +1,13 @@
 # px2Unit Migration Tool
 
-A script-based tool for migrating codebases from px2Unit function calls to pure px values.
+A demo project showcasing how to use a script that manipulates the AST to remove `px2Unit` function calls inside `styled-components` and `jsxAttributes` and transform them to `px`.
 
 ## Purpose
 Automatically transforms code like:
 
 ```javascript
 width: ${px2Unit(10)} -> width: "10px"
+<Img width={px2Unit(10)} /> -> <Img width="10px" />
 ```
 
 ## Features

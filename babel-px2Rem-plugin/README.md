@@ -21,9 +21,15 @@ npm link
 
 ```javascript
 // Before
-const Button = styled.button padding: 10px; margin: ${props => props.margin}px;
+const Button = styled.button`
+  padding: 10px;
+  margin: ${props => props.margin}px;
+`
 // After
-const Button = styled.button padding: 0.625rem; margin: ${props => props.margin / 16}rem;
+const Button = styled.button`
+  padding: 0.625rem;
+  margin: ${props => props.margin / 16}rem;
+`
 ```
 
 
@@ -31,22 +37,29 @@ const Button = styled.button padding: 0.625rem; margin: ${props => props.margin 
 
 ```javascript
 {
-// Base font size for conversion
-rootValue: 16,
-// Decimal places in rem values
-unitPrecision: 5,
-// Minimum px value to transform
-minPixelValue: 0,
-// Multiplication factor for conversion
-multiplier: 1,
-// Enable runtime transformation
-transformRuntime: false,
-// CSS properties to transform
-propList: [""],
-// Selectors to ignore
-selectorBlackList: [],
-// Enable media query conversion
-mediaQuery: false
+  // Base font size for conversion
+  "rootValue": 16,
+  
+  // Decimal places in rem values  
+  "unitPrecision": 5,
+  
+  // Minimum px value to transform
+  "minPixelValue": 0,
+  
+  // Multiplication factor for conversion
+  "multiplier": 1,
+  
+  // Enable runtime transformation
+  "transformRuntime": false,
+  
+  // CSS properties to transform
+  "propList": [""],
+  
+  // Selectors to ignore
+  "selectorBlackList": [],
+  
+  // Enable media query conversion
+  "mediaQuery": false
 }
 ```
 
@@ -63,6 +76,3 @@ The plugin processes styled-components template literals and:
 2. Converts static px values to rem at build time
 3. Transforms dynamic expressions to include rem conversion
 4. Preserves other CSS properties and values
-
-## License
-MIT

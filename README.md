@@ -1,6 +1,8 @@
 # AST Transformation Examples
 
-A collection of projects demonstrating different AST (Abstract Syntax Tree) transformation use cases with JavaScript/React codebases.
+A collection of projects demonstrating different AST (Abstract Syntax Tree) transformation use cases with JavaScript/Next.js codebases.
+
+It is intended to transform legacy codebases from using `px2Unit` function calls inside codebase to go back to using `px` units, but move the `rem` transformation from runtime to build time.
 
 ## Projects Overview
 
@@ -13,9 +15,8 @@ npm install
 npm run dev # runs on port 3001
 ```
 
-
 ### 2. px2unit-px-migration
-Script-based tool for migrating codebases from px2Unit function calls to pure px values.
+Showcasing how to use a script that manipulates the AST to remove `px2Unit` function calls inside `styled-components` and `jsxAttributes` and transform them to `px`.
 
 ```bash
 cd px2unit-px-migration
@@ -24,9 +25,17 @@ npm run dev # runs on port 3002
 npm run remove-px2Unit # execute px2Unit function removal script
 ```
 
+### 3. babel-px2Rem-plugin
+A custom Babel plugin paired with postcss for automatically converting px units to rem in styled-components and jsxAttributes. It is not published to npm, but you can install it locally and link it to the other projects.
 
-### 3. px-to-rem-buildtime-transformation
-Next.js project demonstrating build-time px-to-rem transformation using a custom Babel plugin.
+```bash
+cd babel-px2Rem-plugin
+npm install
+npm link
+```
+
+### 4. px-to-rem-buildtime-transformation
+The project that applies the `babel-px2Rem-plugin` to transform the `px` units to `rem` in the build process.
 
 ```bash
 cd px-to-rem-buildtime-transformation
@@ -50,27 +59,15 @@ npm link babel-plugin-styled-components-px2rem
 npm run dev # runs on port 3003
 ```
 
-You can now see the transform result in dev tool.
-
-
-### 4. babel-px2Rem-plugin
-Babel plugin for automatically converting px units to rem in styled-components.
-
-```bash
-cd babel-px2Rem-plugin
-npm install
-npm link
-```
-
+You can now see the transformed `px` units to `rem` in dev tool.
 
 ### 5. px2unit-forbidden-eslint-rule
-Custom ESLint rule to prevent the use of px2Unit function calls.
+Custom ESLint rule to prevent the future use of `px2Unit` function calls.
 
 ```bash
 cd px2unit-forbidden-eslint-rule
 npm install
 ```
-
 
 
 ## Common Use Cases

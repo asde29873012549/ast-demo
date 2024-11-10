@@ -21,14 +21,18 @@ npm run dev
 ```
 
 ## Configuration
+
 `.babelrc`:
 ```json
 {
-"plugins": [
-["styled-components-px2rem", {
-"rootValue": 3.75,
-"unitPrecision": 5
-}]
-]
+  "plugins": [
+    [
+      "styled-components-px2rem",
+      {
+        "rootValue": 3.75,
+        "unitPrecision": 5
+      }
+    ]
+  ]
 }
 ```
