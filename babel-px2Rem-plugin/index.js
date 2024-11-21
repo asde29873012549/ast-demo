@@ -25,26 +25,52 @@ const createPx2RemCall = (px2rem, ...args) => {
   return callExpression(px2rem, args)
 }
 
+const handleArrowFunction = (expression, px2rem) => {
+  const { body } = expression;
+
+  if (isBlockStatement(body)) {
+    // example
+    // margin: ${props => {
+    //   if (props.large) {
+    //     return '20px';
+    //   }
+    //   return '10px';
+    // }};
+    expression.body = createPx2RemCall(px2rem, arrowFunctionExpression([], body));
+    return expression;
+  }
+  
+  if (isPureExpression(body)) {
+    expression.body = createPx2RemCall(px2rem, body);
+    return expression;
+  }
+  
+  expression.body = insertPx2RemCall(body, px2rem);
+  return expression;
+}
+
+const wrapFunctionWithPx2Rem = (expression, px2rem) => {
+  return arrowFunctionExpression(
+    [restElement(identifier('args'))],
+    createPx2RemCall(px2rem, expression, spreadElement(identifier('args')))
+  );
+}
+
 const insertPx2RemCall = (expression, px2rem) => {
+  // Case 1: Arrow Function Expression
   if (isArrowFunctionExpression(expression)) {
-    if (isBlockStatement(expression.body)) {
-      // example
-      // margin: ${props => {
-      //   if (props.large) {
-      //     return '20px';
-      //   }
-      //   return '10px';
-      // }};
-      expression.body = createPx2RemCall(px2rem, arrowFunctionExpression([], expression.body))
-    } else if (isPureExpression(expression.body)) {
-      expression.body = createPx2RemCall(px2rem, expression.body)
-    } else {
-      expression.body = insertPx2RemCall(expression.body, px2rem)
-    }
-  } else if (isConditionalExpression(expression)) {
-    expression.alternate = insertPx2RemCall(expression.alternate, px2rem)
-    expression.consequent = insertPx2RemCall(expression.consequent, px2rem)
-  } else if (isFunctionExpression(expression)) {
+    return handleArrowFunction(expression, px2rem);
+  }
+
+  // Case 2: Conditional Expression (ternary)
+  if (isConditionalExpression(expression)) {
+    expression.alternate = insertPx2RemCall(expression.alternate, px2rem);
+    expression.consequent = insertPx2RemCall(expression.consequent, px2rem);
+    return expression;
+  }
+
+  // Case 3: Regular Function Expression
+  if (isFunctionExpression(expression)) {
     // Before
     // margin: ${function(props) {
     //   return props.size + 'px';
@@ -54,15 +80,11 @@ const insertPx2RemCall = (expression, px2rem) => {
     // margin: ${(...args) => _px2rem(function(props) {
     //   return props.size + 'px';
     // }, ...args)};
-    return arrowFunctionExpression(
-      [restElement(identifier('args'))],
-      createPx2RemCall(px2rem, expression, spreadElement(identifier('args')))
-    )
-  } else {
-    return createPx2RemCall(px2rem, expression);
+    return wrapFunctionWithPx2Rem(expression, px2rem);
   }
 
-  return expression;
+  // Case 4: Simple expressions (default case)
+  return createPx2RemCall(px2rem, expression);
 }
 
 const transformRuntime = (templateLiteralPath) => {
