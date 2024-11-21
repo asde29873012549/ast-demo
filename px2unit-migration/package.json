@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "remove-px2Unit": "node scripts/px2UnitRemoval/index.mjs"
+    "rm-px2unit-dry": "node scripts/px2UnitRemoval/index.mjs --dry-run",
+    "rm-px2unit": "node scripts/px2UnitRemoval/index.mjs"
   },
   "dependencies": {
     "next": "^15.0.3",

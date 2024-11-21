@@ -1,0 +1,15 @@
+{
+    "name": "ast-demo",
+    "version": "0.1.0",
+    "description": "",
+    "author": "",
+    "license": "ISC",
+    "keywords": ["ast-demo"],
+    "scripts": {
+        "start:start-up": "npm run dev --prefix start-up",
+        "start:px2unit-migration": "npm run dev --prefix px2unit-migration",
+        "start:babel-plugin-application": "npm run dev --prefix babel-plugin-application",
+        "start:swc-plugin-application": "npm run dev --prefix swc-plugin-application",
+        "start:px2unit-forbidden-eslint-rule": "npm run dev --prefix px2unit-forbidden-eslint-rule"
+    }
+}

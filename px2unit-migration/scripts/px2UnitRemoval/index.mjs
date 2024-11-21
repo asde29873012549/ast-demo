@@ -14,6 +14,8 @@ const main = () => {
     getAllFiles(getAbsolutePath(path)),
   );
 
+  const isDryRun = process.argv.includes("--dry-run");
+
   files.forEach((file) => {
     const code = fs.readFileSync(file, "utf-8");
     const ast = parseCodeToAST(code);
@@ -22,8 +24,11 @@ const main = () => {
 
     const output = generator(ast).code;
 
-    // fs.writeFileSync(file, output);
-    console.log(output);
+    if (isDryRun) {
+      console.log(output);
+    } else {
+      fs.writeFileSync(file, output);
+    }
   });
 };
 

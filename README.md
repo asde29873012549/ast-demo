@@ -22,7 +22,8 @@ Showcasing how to use a script that manipulates the AST to remove `px2Unit` func
 cd px2unit-migration
 npm install
 npm run dev # runs on port 3002
-npm run remove-px2Unit # execute px2Unit function removal script
+npm run rm-px2unit-dry # dry run
+npm run rm-px2unit # apply changes
 ```
 
 ### 3. babel-plugin-px2rem
