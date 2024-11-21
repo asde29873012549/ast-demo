@@ -1,15 +1,15 @@
 {
-  "name": "px-to-rem-buildtime-transformation",
+  "name": "swc-plugin-application",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3003",
+    "dev": "next dev -p 3004",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "13.5.7",
+    "next": "^15.0.3",
     "react": "^18",
     "react-dom": "^18",
     "styled-components": "^6.1.13"

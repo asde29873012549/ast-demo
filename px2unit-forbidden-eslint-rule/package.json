@@ -1,5 +1,5 @@
 {
-  "name": "px2unit-px-migration",
+  "name": "px2unit-forbidden-eslint-rule",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "next": "13.5.7",
+    "next": "^15.0.3",
     "react": "^18",
     "react-dom": "^18",
     "styled-components": "^6.1.13"

@@ -1,7 +1,7 @@
-A Next.js project demonstrating build-time px-to-rem transformation using a custom Babel plugin.
+A Next.js project demonstrating compile-time px-to-rem transformation using a custom Babel plugin.
 
 ## Features
-- Automatic px-to-rem conversion at build time
+- Automatic px-to-rem conversion at compile time
 - No runtime conversion overhead
 - Preserves dynamic expressions
 - Supports styled-components
@@ -13,7 +13,7 @@ A Next.js project demonstrating build-time px-to-rem transformation using a cust
 cd ../babel-px2Rem-plugin
 npm link
 Setup project
-cd ../px-to-rem-buildtime-transformation
+cd ../babel-plugin-application
 npm install
 npm link babel-plugin-styled-components-px2rem
 # Start development server

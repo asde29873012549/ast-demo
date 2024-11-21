@@ -1,9 +1,9 @@
 # Start-up Project
 
-A base Next.js 13 project configured with styled-components, serving as the foundation for AST transformation demos.
+A base Next.js 15 project configured with styled-components, serving as the foundation for AST transformation demos.
 
 ## Features
-- Next.js 13
+- Next.js 15
 - styled-components
 - Responsive design implemented with:
   - Dynamic HTML root font-size based on the screen width
