@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3004",
+    "dev": "npm link swc_plugin_styled_px2rem && next dev -p 3004",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

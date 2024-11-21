@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3003",
+    "dev": "npm link babel-plugin-styled-components-px2rem && next dev -p 3003",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -15,6 +15,7 @@
     "styled-components": "^6.1.13"
   },
   "devDependencies": {
+    "@babel/runtime": "^7.26.0",
     "babel-plugin-styled-components": "^2.1.4",
     "eslint": "^8",
     "eslint-config-next": "13.5.7",

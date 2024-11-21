@@ -3,6 +3,7 @@
 A demo project showcasing how to use a script that manipulates the AST to remove `px2Unit` function calls inside `styled-components` and `jsxAttributes` and transform them to `px`.
 
 ## Purpose
+
 Automatically transforms code like:
 
 ```javascript
@@ -11,6 +12,7 @@ width: ${px2Unit(10)} -> width: "10px"
 ```
 
 ## Features
+
 - AST-based code transformation
 - Handles various px2Unit usage patterns:
   - Direct function calls
@@ -32,6 +34,7 @@ npm run rm-px2unit // apply changes
 ```
 
 ## Script Structure
+
 - `/scripts/px2UnitRemoval/`
   - `index.mjs`: Entry point
   - `visitors/`: AST visitor definitions
@@ -39,6 +42,8 @@ npm run rm-px2unit // apply changes
   - `utils/`: Helper utilities
 
 ## Configuration
+
 Edit `constants.mjs` to configure:
+
 - `INCLUDE_PATHS`: Directories to process
 - `AVAILABLE_EXTENSIONS`: File types to transform
