@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm link babel-plugin-styled-components-px2rem && next dev -p 3003",
+    "dev": "cd ../babel-plugin-px2rem && npm link && cd ../babel-plugin-application && npm link babel-plugin-styled-components-px2rem && next dev -p 3003",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

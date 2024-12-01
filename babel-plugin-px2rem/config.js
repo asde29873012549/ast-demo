@@ -38,6 +38,8 @@ class Config {
     });
 
     this.#config = Object.assign({}, this.#config, config);
+
+    return this.getConfig();
   }
 }
 

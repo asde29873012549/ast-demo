@@ -27,7 +27,7 @@ npm run rm-px2unit # apply changes
 ```
 
 ### 3. babel-plugin-px2rem
-A custom Babel plugin paired with postcss for automatically converting px units to rem in styled-components and jsxAttributes. It is not published to npm, but you can install it locally and link it to the other projects.
+A custom Babel plugin paired with postcss for automatically converting px units to rem in styled-components and jsxAttributes. It is not published to npm, but you can install it locally and link it to the other projects. Please note that if you want to use it inside the `babel-plugin-application` project, you can skip the `npm link` step, because `babel-plugin-application` will do it for you.
 
 ```bash
 cd babel-plugin-px2rem
@@ -54,6 +54,7 @@ npm link
 Or follow the [babel-plugin-px2rem](./babel-plugin-px2rem/README.md) README for instructions.
 
 When done, you can link the plugin to the babel-plugin-application project:
+Note: If you remain project structure as is, you can skip the `npm link babel-plugin-styled-components-px2rem` step, because simply running `npm run dev` will do the linking for you.
 
 ```bash
 npm link babel-plugin-styled-components-px2rem
