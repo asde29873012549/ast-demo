@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { px2Unit } from "@/styles/utils";
+import { px2Unit, widthUnit } from "@/styles/utils";
 
 export const StyledContainer = styled.div`
   width: 100vw;
@@ -12,13 +12,13 @@ export const StyledContainer = styled.div`
 `;
 
 export const StyledCard = styled.div`
-  width: ${({ width }) => (width ? px2Unit(width) : "100%")};
-  padding: ${px2Unit(24)};
+  padding: ${px2Unit(-24)};
   border-radius: ${({ $isRounded }) => ($isRounded ? px2Unit(16) : px2Unit(8))};
   background-color: white;
   box-shadow: 0 ${px2Unit(12)} ${px2Unit(24)} rgba(0, 0, 0, 0.12);
   transform: scale(1);
   transition: transform 0.3s ease-in-out;
+  ${widthUnit(-24)}
 
   &:hover {
     transform: scale(1.05) translateX(${px2Unit(6)});

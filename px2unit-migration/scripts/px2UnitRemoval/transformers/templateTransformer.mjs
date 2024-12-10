@@ -8,6 +8,7 @@ import {
   isNumericLiteral,
   isCallExpression,
   stringLiteral,
+  isUnaryExpression,
 } from "@babel/types";
 
 export const transformDirectPx2UnitCall = (
@@ -25,9 +26,12 @@ export const transformDirectPx2UnitCall = (
     // prevQuasi 'font-size: '
     // nextQuasi ';\n font-weight: '
     // merged: 'font-size: 10px;\n font-weight: '
-    const value = `${arg.value}px`;
-    prevQuasi.value.raw += `${value}${nextQuasi.value.raw}`;
-    prevQuasi.value.cooked += `${value}${nextQuasi.value.cooked}`;
+
+    const { value, operator, argument } = arg;
+    // Handle unary expressions
+    const pxValue = isUnaryExpression(arg) ? `${operator}${argument.value}px` : `${value}px`;
+    prevQuasi.value.raw += `${pxValue}${nextQuasi.value.raw}`;
+    prevQuasi.value.cooked += `${pxValue}${nextQuasi.value.cooked}`;
 
     // Remove the merged nextQuasi and the expression
     quasiPath.remove();

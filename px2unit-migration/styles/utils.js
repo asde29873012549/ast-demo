@@ -16,3 +16,12 @@ export const px2Unit = (pixel) => {
   const unit = (pixel / GENERAL_WIDTH) * 100;
   return `${unit}rem`;
 };
+
+export const widthUnit = (pixel) => {
+  return `width: ${px2Unit(pixel)};`;
+};
+
+export const heightUnit = (pixel) => {
+  return `height: ${px2Unit(pixel)};`;
+};
+

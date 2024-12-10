@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { px2Unit } from "@/styles/utils";
+import { px2Unit, heightUnit } from "@/styles/utils";
 
 const Avatar = ({ className, src, alt }) => {
   return (
@@ -12,7 +12,7 @@ const Avatar = ({ className, src, alt }) => {
 
 export default styled(Avatar)`
   width: ${({ $size }) => px2Unit($size)};
-  height: ${({ $size }) => px2Unit($size)};
+  ${heightUnit(80)}
   margin-bottom: ${({ $size }) => {
     return px2Unit($size / 5);
   }};

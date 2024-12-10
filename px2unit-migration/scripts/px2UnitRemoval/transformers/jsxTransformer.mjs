@@ -3,13 +3,17 @@ import {
   isPureExpression,
   createTemplateLiteral,
 } from "../utils/ast.mjs";
-import { stringLiteral } from "@babel/types";
+import { stringLiteral, isUnaryExpression } from "@babel/types";
 
 export const transformJSXContainer = (jsxContainerPath, arg) => {
   // Handle pure literals cases (numeric and string)
   // transform width={px2Unit(10)} to width="10px"
   if (isPureLiteral(arg)) {
-    jsxContainerPath.replaceWith(stringLiteral(`${arg.value}px`));
+    const { value, operator, argument } = arg;
+    // Handle unary expressions
+    const pxValue = isUnaryExpression(arg) ? `${operator}${argument.value}px` : `${value}px`;
+
+    jsxContainerPath.replaceWith(stringLiteral(pxValue));
     return;
   }
 

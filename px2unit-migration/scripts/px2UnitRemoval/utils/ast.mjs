@@ -6,13 +6,14 @@ import {
   isBinaryExpression,
   isStringLiteral,
   isNumericLiteral,
+  isUnaryExpression,
   isOptionalMemberExpression,
   isLogicalExpression,
   templateLiteral,
   templateElement,
 } from "@babel/types";
 
-import { STYLED_TAGS } from "../constants.mjs";
+import { STYLED_TAGS, VALID_UNARY_OPERATORS } from "../constants.mjs";
 
 // Handle cases like keyframes`...`
 const isStyledIdentifier = (identifier) => {
@@ -94,6 +95,10 @@ export const isPureExpression = (expression) => {
 };
 
 export const isPureLiteral = (expression) => {
+  if (isUnaryExpression(expression) && VALID_UNARY_OPERATORS.includes(expression.operator)) {
+    return isNumericLiteral(expression.argument);
+  }
+
   return isNumericLiteral(expression) || isStringLiteral(expression);
 };
 
