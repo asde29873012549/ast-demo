@@ -1,1 +1,0 @@
-<div width={`${size}px`} />;
