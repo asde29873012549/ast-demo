@@ -17,6 +17,7 @@
   "devDependencies": {
     "eslint": "^8",
     "eslint-config-next": "13.5.7",
-    "postcss": "^8.4.47"
+    "postcss": "^8.4.47",
+    "styled-px2rem-loader": "^1.0.0"
   }
 }

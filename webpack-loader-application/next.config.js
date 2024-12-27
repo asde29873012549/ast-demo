@@ -10,7 +10,7 @@ const nextConfig = {
   webpack: (config) => {
     config.module.rules.push({
       test: /\.(js|jsx)$/,
-      loader: path.resolve(__dirname, '../styled-px2rem-loader/index.js'),
+      loader: 'styled-px2rem-loader',
       options: {
         rootValue: 3.75,
         unitPrecision: 2,
