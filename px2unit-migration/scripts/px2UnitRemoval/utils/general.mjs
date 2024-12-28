@@ -37,3 +37,13 @@ export const getAllFiles = (basePath) => {
 
   return filePaths;
 };
+
+
+export const checkDirectoriesExist = (paths) => {
+  if (!paths || paths.length === 0) return false;
+
+  return paths.every((path) => {
+    const absolutePath = getAbsolutePath(path);
+    return fs.existsSync(absolutePath) && isDirectory(absolutePath);
+  });
+};

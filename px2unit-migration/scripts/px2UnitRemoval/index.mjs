@@ -1,8 +1,8 @@
 import fs from "fs";
 import _generator from "@babel/generator";
 
-import { INCLUDE_PATHS } from "./constants.mjs";
-import { getAbsolutePath, getAllFiles } from "./utils/general.mjs";
+import { DEFAULT_INCLUDE_PATHS, COMMAND_LINE_ARGS } from "./constants.mjs";
+import { getAbsolutePath, getAllFiles, checkDirectoriesExist } from "./utils/general.mjs";
 
 import { parseCodeToAST } from "./parse.mjs";
 import { traverseAST } from "./traverse.mjs";
@@ -10,7 +10,14 @@ import { traverseAST } from "./traverse.mjs";
 const generator = _generator.default;
 
 const main = () => {
-  const files = INCLUDE_PATHS.flatMap((path) =>
+  const idx = process.argv.indexOf(COMMAND_LINE_ARGS.INCLUDE_PATHS);
+  const providedArgPaths = idx > 0 && process.argv.slice(idx + 1);
+
+  if (!checkDirectoriesExist(providedArgPaths)) {
+    throw new Error("Provided paths does not exist or is not a directory");
+  };
+
+  const files = (providedArgPaths || DEFAULT_INCLUDE_PATHS).flatMap((path) =>
     getAllFiles(getAbsolutePath(path)),
   );
 
