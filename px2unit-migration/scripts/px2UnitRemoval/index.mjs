@@ -29,7 +29,14 @@ const main = () => {
 
     traverseAST(ast, code);
 
-    const output = generator(ast).code;
+    const output = generator(
+      ast,
+      {
+        retainLines: true,
+        experimental_preserveFormat: true,
+      },
+      code,
+    ).code;
 
     if (isDryRun) {
       console.log(output);
