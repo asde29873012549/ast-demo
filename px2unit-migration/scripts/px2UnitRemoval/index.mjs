@@ -11,7 +11,7 @@ const generator = _generator.default;
 
 const main = () => {
   const idx = process.argv.indexOf(COMMAND_LINE_ARGS.INCLUDE_PATHS);
-  const providedArgPaths = idx > 0 && process.argv.slice(idx + 1);
+  const providedArgPaths = idx > 0 && process.argv.slice(idx + 1).filter((arg) => arg !== COMMAND_LINE_ARGS.DRY_RUN);
 
   if (!checkDirectoriesExist(providedArgPaths)) {
     throw new Error("Provided paths does not exist or is not a directory");
