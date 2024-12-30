@@ -1,4 +1,4 @@
-import fs from "fs";
+import * as fs from "fs";
 import _generator from "@babel/generator";
 
 import { DEFAULT_INCLUDE_PATHS, COMMAND_LINE_ARGS } from "./constants.mjs";
@@ -9,11 +9,11 @@ import { traverseAST } from "./traverse.mjs";
 
 const generator = _generator.default;
 
-const main = () => {
+const script = () => {
   const idx = process.argv.indexOf(COMMAND_LINE_ARGS.INCLUDE_PATHS);
   const providedArgPaths = idx > 0 && process.argv.slice(idx + 1).filter((arg) => arg !== COMMAND_LINE_ARGS.DRY_RUN);
 
-  if (!checkDirectoriesExist(providedArgPaths)) {
+  if (providedArgPaths && !checkDirectoriesExist(providedArgPaths)) {
     throw new Error("Provided paths does not exist or is not a directory");
   };
 
@@ -21,7 +21,7 @@ const main = () => {
     getAllFiles(getAbsolutePath(path)),
   );
 
-  const isDryRun = process.argv.includes("--dry-run");
+  const isDryRun = process.argv.includes(COMMAND_LINE_ARGS.DRY_RUN);
 
   files.forEach((file) => {
     const code = fs.readFileSync(file, "utf-8");
@@ -46,4 +46,4 @@ const main = () => {
   });
 };
 
-main();
+export default script;

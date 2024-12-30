@@ -58,12 +58,17 @@ export const traverseExpressions = (expressionPath) => {
     CallExpression: (callExprPath) => {
       if (!isPx2UnitCall(callExprPath.node)) return;
 
-      const [arg] = callExprPath.node.arguments;
+      const { parentPath, node } = callExprPath;
+      const [arg] = node.arguments;
 
-      // Replace px2Unit call with either:
-      // 1. A string literal with 'px' suffix for numeric values (e.g. "10px")
-      // 2. A template literal for dynamic values (e.g. `${width}px`)
-      callExprPath.replaceWith(getReplacementNode(arg));
+      if (parentPath?.isTemplateLiteral()) {
+        transformTemplate(parentPath);
+      } else {
+        // Replace px2Unit call with either:
+        // 1. A string literal with 'px' suffix for numeric values (e.g. "10px")
+        // 2. A template literal for dynamic values (e.g. `${width}px`)
+        callExprPath.replaceWith(getReplacementNode(arg));
+      }
     },
   });
 };
