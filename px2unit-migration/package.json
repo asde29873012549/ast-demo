@@ -8,9 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "rm-px2unit-dry": "node scripts/rm-px2Unit/index.mjs --dry",
-    "rm-px2unit": "node scripts/rm-px2Unit/index.mjs"
+    "test": "jest",
+    "rmPx2Unit-dry": "node scripts/rmPx2Unit/index.mjs --dry",
+    "rmPx2Unit": "node scripts/rmPx2Unit/index.mjs"
   },
   "dependencies": {
     "next": "^15.0.3",
@@ -23,6 +23,7 @@
     "@babel/parser": "^7.26.2",
     "@babel/traverse": "^7.25.9",
     "@babel/types": "^7.26.0",
+    "enquirer": "^2.4.1",
     "eslint": "^8",
     "eslint-config-next": "13.5.7",
     "eslint-config-prettier": "^9.1.0",

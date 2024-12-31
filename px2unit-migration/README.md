@@ -29,8 +29,8 @@ width: ${px2Unit(10)} -> width: "10px"
 npm install
 
 # Run migration script
-npm run rm-px2unit-dry // dry run
-npm run rm-px2unit // apply changes
+npm run rmPx2Unit-dry // dry run
+npm run rmPx2Unit // apply changes
 ```
 
 ## Script Structure
