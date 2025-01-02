@@ -1,23 +1,21 @@
-const fs = require("fs")
+const fs = require('fs')
 
-const _generator = require("@babel/generator")
-const { prompt } = require("enquirer")
+const _generator = require('@babel/generator')
+const { prompt } = require('enquirer')
 
-const { DEFAULT_INCLUDE_PATHS, COMMAND_LINE_ARGS } = require("./constants.js")
-const { getAbsolutePath, getAllFiles, checkDirectoriesExist, createPen } = require("./utils/general.js")
-const parseCodeToAST = require("./parse.js")
-const traverseAST = require("./traverse.js")
-
+const { DEFAULT_INCLUDE_PATHS, COMMAND_LINE_ARGS } = require('./constants.js')
+const { getAbsolutePath, getAllFiles, checkDirectoriesExist, createPen } = require('./utils/general.js')
+const parseCodeToAST = require('./parse.js')
+const traverseAST = require('./traverse.js')
 
 const generator = _generator.default
-
 
 const script = async () => {
   const idx = process.argv.indexOf(COMMAND_LINE_ARGS.INCLUDE_PATHS)
   const providedArgPaths = idx > 0 && process.argv.slice(idx + 1).filter((arg) => arg !== COMMAND_LINE_ARGS.DRY_RUN)
 
   if (providedArgPaths && !checkDirectoriesExist(providedArgPaths)) {
-    throw new Error("Provided paths does not exist or is not a directory")
+    throw new Error('Provided paths does not exist or is not a directory')
   }
 
   const pen = createPen()
@@ -32,7 +30,7 @@ const script = async () => {
 
   if (!response.confirm) {
     console.log(pen.red('Aborted'))
-    return
+    return {}
   }
 
   const appliedPaths = providedArgPaths || DEFAULT_INCLUDE_PATHS
@@ -40,20 +38,36 @@ const script = async () => {
   const isDryRun = process.argv.includes(COMMAND_LINE_ARGS.DRY_RUN)
 
   files.forEach((file) => {
-    const code = fs.readFileSync(file, "utf-8")
-    const ast = parseCodeToAST(code)
+    const code = fs.readFileSync(file, 'utf-8')
 
-    traverseAST(ast, code)
+    let ast
 
-    const output = generator(
-      ast,
-      {
-        retainLines: true,
-        experimental_preserveFormat: true,
-      },
-      code,
-    ).code
+    try {
+      ast = parseCodeToAST(code)
+    } catch (error) {
+      throw new Error(`Failed to parse AST in file ${file}:\n${error.message}`)
+    }
 
+    try {
+      traverseAST(ast, code)
+    } catch (error) {
+      throw new Error(`Failed to traverse AST in file ${file}:\n${error.message}`)
+    }
+
+    let output
+
+    try {
+      output = generator(
+        ast,
+        {
+          retainLines: true,
+          experimental_preserveFormat: true,
+        },
+        code
+      ).code
+    } catch (error) {
+      throw new Error(`Failed to generate code in file ${file}:\n${error.message}`)
+    }
 
     if (isDryRun) {
       console.log(output)
