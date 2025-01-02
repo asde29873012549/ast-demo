@@ -7,6 +7,11 @@ const {
 } = require("../utils/ast.js")
 
 const transformJSXContainer = (jsxContainerPath, arg) => {
+  if (arg === undefined || arg === null) {
+    jsxContainerPath.replaceWith(stringLiteral("0px"))
+    return
+  }
+
   // Handle pure literals cases (numeric and string)
   // transform width={px2Unit(10)} to width="10px"
   if (isPureLiteral(arg)) {

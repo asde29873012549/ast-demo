@@ -22,6 +22,17 @@ const transformDirectPx2UnitCall = (
 
   const [arg] = exprPath.node.arguments
 
+  if (arg === undefined || arg === null) {
+    // eslint-disable-next-line no-param-reassign
+    prevQuasi.value.raw += `0px${nextQuasi.value.raw}`
+    // eslint-disable-next-line no-param-reassign
+    prevQuasi.value.cooked += `0px${nextQuasi.value.cooked}`
+
+    // Remove the merged nextQuasi and the expression
+    quasiPath.remove()
+    exprPath.remove()
+  }
+
   if (isPureLiteral(arg)) {
     // Merge the literal value, and also merge the next quasi's value
     // prevQuasi 'font-size: '
@@ -56,6 +67,10 @@ const transformDirectPx2UnitCall = (
 function traverseExpressions(expressionPath, maxDepth) {
   const depth = maxDepth === undefined ? 0 : maxDepth - 1
   const getReplacementNode = (arg) => {
+    if (arg === undefined || arg === null) {
+      return stringLiteral("0")
+    }
+
     if (isNumericLiteral(arg)) {
       return stringLiteral(`${arg.value}px`)
     }
