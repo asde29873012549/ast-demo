@@ -1,17 +1,15 @@
-const fs = require("fs")
-const path = require("path")
-const { spawn } = require("child_process")
+const fs = require('fs')
+const path = require('path')
+const { spawn } = require('child_process')
 
-const { AVAILABLE_EXTENSIONS, ANSI_PALETTE } = require("../constants.js")
+const { AVAILABLE_EXTENSIONS, ANSI_PALETTE } = require('../constants.js')
 
 const isDirectory = (filePath) => fs.statSync(filePath).isDirectory()
 
 // filter hidden files
-const filterInvalidFiles = (files) =>
-  files.filter((file) => !file.startsWith(".") && !file.startsWith("_"))
+const filterInvalidFiles = (files) => files.filter((file) => !file.startsWith('.') && !file.startsWith('_'))
 
-const getSubDirectoriesFromFilePath = (filePath) =>
-  filterInvalidFiles(fs.readdirSync(filePath))
+const getSubDirectoriesFromFilePath = (filePath) => filterInvalidFiles(fs.readdirSync(filePath))
 
 const getAbsolutePath = (relativePath) => path.resolve(process.cwd(), relativePath)
 
@@ -52,14 +50,24 @@ const createPen = () => ({
   red: (text) => `${ANSI_PALETTE.RED}${text}${ANSI_PALETTE.RESET}`,
 })
 
-const postprocess = (paths) => {
-  return {
-    eslint() {
-      const pen = createPen()
-
-      console.log(pen.green('eslint started formatting'))
-
-      const eslintArgs = ['eslint', '--fix', ...paths.map((path) => `"${path}/**/*"`)]
+const execute = {
+  prettier: (paths) =>
+    new Promise((resolve, reject) => {
+      const prettierArgs = ['--write', ...paths]
+      spawn('prettier', prettierArgs, { stdio: 'inherit' }).on('close', (code) => {
+        const pen = createPen()
+        if (code === 0) {
+          console.log(pen.green('prettier finished formatting'))
+          resolve(code)
+        } else {
+          console.log(pen.red(`prettier process exited with code ${code}`))
+          reject(new Error(`Prettier process exited with code ${code}`))
+        }
+      })
+    }),
+  eslint: (paths) =>
+    new Promise((resolve, reject) => {
+      const eslintArgs = ['eslint', '--fix', ...paths.map((path) => `${path}/**`)]
       spawn('npx', eslintArgs, {
         stdio: 'inherit',
         env: {
@@ -68,14 +76,16 @@ const postprocess = (paths) => {
         },
         shell: true,
       }).on('close', (code) => {
+        const pen = createPen()
         if (code === 0) {
           console.log(pen.green('eslint finished formatting'))
+          resolve(code)
         } else {
           console.log(pen.red(`eslint process exited with code ${code}`))
+          reject(new Error(`ESLint process exited with code ${code}`))
         }
       })
-    }
-  }
+    }),
 }
 
 module.exports = {
@@ -83,5 +93,5 @@ module.exports = {
   getAllFiles,
   checkDirectoriesExist,
   createPen,
-  postprocess,
+  execute,
 }

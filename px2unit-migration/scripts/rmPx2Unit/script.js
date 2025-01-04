@@ -1,13 +1,14 @@
 const fs = require('fs')
 
-const { print } = require('recast')
-const { transformFromAstSync } = require('@babel/core')
+const _generator = require('@babel/generator')
 const { prompt } = require('enquirer')
 
 const { DEFAULT_INCLUDE_PATHS, COMMAND_LINE_ARGS } = require('./constants.js')
 const { getAbsolutePath, getAllFiles, checkDirectoriesExist, createPen } = require('./utils/general.js')
 const parseCodeToAST = require('./parse.js')
-const traverseVisitor = require('./traverse.js')
+const traverseAST = require('./traverse.js')
+
+const generator = _generator.default
 
 const script = async () => {
   const idx = process.argv.indexOf(COMMAND_LINE_ARGS.INCLUDE_PATHS)
@@ -48,14 +49,7 @@ const script = async () => {
     }
 
     try {
-      const { ast: transformedAST } = transformFromAstSync(ast, code, {
-        cloneInputAst: false,
-        code: false,
-        ast: true,
-        plugins: [traverseVisitor]
-      })
-
-      ast = transformedAST
+      traverseAST(ast, code)
     } catch (error) {
       throw new Error(`Failed to traverse AST in file ${file}:\n${error.message}`)
     }
@@ -63,7 +57,14 @@ const script = async () => {
     let output
 
     try {
-      output = print(ast).code
+      output = generator(
+        ast,
+        {
+          retainLines: true,
+          experimental_preserveFormat: true,
+        },
+        code
+      ).code
     } catch (error) {
       throw new Error(`Failed to generate code in file ${file}:\n${error.message}`)
     }
@@ -73,11 +74,13 @@ const script = async () => {
     } else {
       fs.writeFileSync(file, output)
     }
+
+    console.log(file)
   })
 
   console.log(pen.green('px2Unit removal process completed'))
 
-  return { paths: appliedPaths }
+  return { appliedPaths }
 }
 
 module.exports = script
