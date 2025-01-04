@@ -12,11 +12,9 @@ const getTraverseVisitors = () => {
       Program: {
         enter(programPath) {
           programPath.traverse(visitors)
-  
         },
         exit() {
           importCollector.removeUnusedImports()
-  
         },
       },
     }
