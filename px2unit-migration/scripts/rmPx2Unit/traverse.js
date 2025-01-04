@@ -1,29 +1,23 @@
-const _traverse = require("@babel/traverse")
-
 const createVisitors = require("./visitors/index.js")
 const ImportCollector = require("./transformers/importTransformer.js")
 
-const traverse = _traverse.default
-
-const traverseAST = (ast) => {
+const traverseVisitor = () => {
   const importCollector = new ImportCollector()
-
-  const visitors = createVisitors(importCollector)
-
-
-  traverse(ast, {
+  const visitor = {
     Program: {
       enter(programPath) {
-        programPath.traverse(visitors)
-
+        programPath.traverse(createVisitors(importCollector))
       },
       exit() {
         importCollector.removeUnusedImports()
-
       },
     },
-  })
+  }
 
+  return {
+    name: "traverseVisitor",
+    visitor
+  }
 }
 
-module.exports = traverseAST
+module.exports = traverseVisitor

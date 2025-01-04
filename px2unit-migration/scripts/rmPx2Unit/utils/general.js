@@ -1,6 +1,5 @@
 const fs = require("fs")
 const path = require("path")
-const { spawn } = require("child_process")
 
 const { AVAILABLE_EXTENSIONS, ANSI_PALETTE } = require("../constants.js")
 
@@ -52,46 +51,9 @@ const createPen = () => ({
   red: (text) => `${ANSI_PALETTE.RED}${text}${ANSI_PALETTE.RESET}`,
 })
 
-const execute = {
-  prettier: (paths) => {
-    const prettierArgs = ['--write', ...paths]
-    spawn('prettier', prettierArgs, { stdio: 'inherit' }).on('close', (code) => {
-      const pen = createPen()
-      if (code === 0) {
-        console.log(pen.green('prettier finished formatting'))
-      } else {
-        console.log(pen.red(`prettier process exited with code ${code}`))
-      }
-    })
-  },
-  eslint: (paths) => {
-    const eslintArgs = [
-      'eslint',
-      '--fix',
-      ...paths.map((path) => `${path}/**`),
-    ]
-    spawn('npx', eslintArgs, {
-      stdio: 'inherit',
-      env: {
-        ...process.env,
-        CI: 'true',
-      },
-      shell: true,
-    }).on('close', (code) => {
-      const pen = createPen()
-      if (code === 0) {
-        console.log(pen.green('eslint finished formatting'))
-      } else {
-        console.log(pen.red(`eslint process exited with code ${code}`))
-      }
-    })
-  },
-}
-
 module.exports = {
   getAbsolutePath,
   getAllFiles,
   checkDirectoriesExist,
-  createPen,
-  execute,
+  createPen
 }

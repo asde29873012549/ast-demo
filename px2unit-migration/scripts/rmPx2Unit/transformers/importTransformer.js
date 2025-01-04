@@ -19,6 +19,8 @@ class ImportCollector {
         // refresh scope binding info
         specifierPath.scope.crawl()
 
+        if (!specifierPath.node) return
+
         const identifierName = specifierPath.get("local")?.node.name
         const binding = specifierPath.scope.getBinding(identifierName)
         if (binding && binding.referenced) return
