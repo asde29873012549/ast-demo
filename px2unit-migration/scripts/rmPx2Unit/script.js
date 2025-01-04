@@ -76,6 +76,8 @@ const script = async () => {
   })
 
   console.log(pen.green('px2Unit removal process completed'))
+
+  return { paths: appliedPaths }
 }
 
 module.exports = script
