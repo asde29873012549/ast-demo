@@ -6,7 +6,7 @@ const {
   createTemplateLiteral,
 } = require("../utils/ast.js")
 
-const transformJSXContainer = (jsxContainerPath, arg) => {
+const transformDirectPx2UnitCall = (jsxContainerPath, arg) => {
   if (arg === undefined || arg === null) {
     jsxContainerPath.replaceWith(stringLiteral("0px"))
     return
@@ -32,4 +32,4 @@ const transformJSXContainer = (jsxContainerPath, arg) => {
   }
 }
 
-module.exports = transformJSXContainer
+module.exports = transformDirectPx2UnitCall
