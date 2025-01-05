@@ -64,8 +64,8 @@ const transformDirectPx2UnitCall = (
   }
 }
 
-function traverseExpressions(expressionPath, maxDepth) {
-  const depth = maxDepth === undefined ? 0 : maxDepth - 1
+// set maxDepth to avoid stack overflow caused by mutual recursion
+function traverseExpressions(expressionPath, maxDepth = 10) {
   const getReplacementNode = (arg) => {
     if (arg === undefined || arg === null) {
       return stringLiteral("0")
@@ -89,8 +89,9 @@ function traverseExpressions(expressionPath, maxDepth) {
       const { parentPath, node } = callExprPath
       const [arg] = node.arguments
 
-      if (parentPath?.isTemplateLiteral() && depth > 0) {
-        transformTemplate(parentPath, depth)
+      if (parentPath?.isTemplateLiteral()) {
+        if (maxDepth < 0) throw new Error("Max depth reached in traverseExpressions call")
+        transformTemplate(parentPath, maxDepth - 1)
       } else {
         // Replace px2Unit call with either:
         // 1. A string literal with 'px' suffix for numeric values (e.g. "10px")
@@ -101,7 +102,8 @@ function traverseExpressions(expressionPath, maxDepth) {
   })
 }
 
-function transformTemplate(templateLiteralPath, maxDepth = 5) {
+// set maxDepth to avoid stack overflow caused by mutual recursion
+function transformTemplate(templateLiteralPath, maxDepth = 10) {
   const { quasis, expressions } = templateLiteralPath.node
 
   // Iterate through expressions in reverse to safely modify the AST
@@ -115,7 +117,8 @@ function transformTemplate(templateLiteralPath, maxDepth = 5) {
     if (isCallExpression(expr) && isPx2UnitCall(expr)) {
       transformDirectPx2UnitCall(expressionPath, quasiPath, quasis[i], quasi)
     } else {
-      traverseExpressions(expressionPath, maxDepth)
+      if (maxDepth < 0) throw new Error("Max depth reached in transformTemplate call")
+      traverseExpressions(expressionPath, maxDepth - 1)
     }
   }
 }

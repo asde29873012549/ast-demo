@@ -1,14 +1,12 @@
 const fs = require('fs')
 
-const _generator = require('@babel/generator')
+const { print } = require('recast')
 const { prompt } = require('enquirer')
 
 const { DEFAULT_INCLUDE_PATHS, COMMAND_LINE_ARGS } = require('./constants.js')
 const { getAbsolutePath, getAllFiles, checkDirectoriesExist, createPen } = require('./utils/general.js')
 const parseCodeToAST = require('./parse.js')
 const traverseAST = require('./traverse.js')
-
-const generator = _generator.default
 
 const script = async () => {
   const idx = process.argv.indexOf(COMMAND_LINE_ARGS.INCLUDE_PATHS)
@@ -57,14 +55,7 @@ const script = async () => {
     let output
 
     try {
-      output = generator(
-        ast,
-        {
-          retainLines: true,
-          experimental_preserveFormat: true,
-        },
-        code
-      ).code
+      output = print(ast).code
     } catch (error) {
       throw new Error(`Failed to generate code in file ${file}:\n${error.message}`)
     }
@@ -80,7 +71,7 @@ const script = async () => {
 
   console.log(pen.green('px2Unit removal process completed'))
 
-  return { appliedPaths }
+  return { paths: appliedPaths }
 }
 
 module.exports = script

@@ -1,4 +1,4 @@
-const { isTemplateLiteral } = require("@babel/types")
+const { isTemplateLiteral, isJSXExpressionContainer, isJSXAttribute, isVariableDeclaration } = require("@babel/types")
 
 const { isStyledTag, isPx2UnitCall } = require("../utils/ast.js")
 const transformJSXContainer = require("../transformers/jsxTransformer.js")
@@ -18,8 +18,11 @@ const createVisitors = (importCollector) => ({
     })
   },
 
-  // Handle px2Unit calls inside jsxExpressionContainer
-  JSXExpressionContainer(jsxContainerPath) {
+  // Handle px2Unit calls inside JSXExpressionContainer that is a value of a JSXAttribute
+  JSXAttribute(jsxAttributePath) {
+    const jsxContainerPath = jsxAttributePath.get("value")
+    if (!jsxContainerPath || !isJSXExpressionContainer(jsxContainerPath)) return
+
     jsxContainerPath.traverse({
       CallExpression: (callExprPath) => {
         // direct px2Unit call eg. width={px2Unit(10)}
@@ -34,6 +37,26 @@ const createVisitors = (importCollector) => ({
         } else {
           traverseExpressions(jsxContainerPath)
         }
+      },
+    })
+  },
+
+  // Handle px2Unit calls inside other JSXExpressionContainer
+  /* eg.
+  <div>
+    {data.map((item) => {
+      const margin = px2Unit(12)
+      const padding = `${px2Unit(item.paddingLeft)} ${px2Unit(item.paddingRight)}`
+      return <div margin={margin} padding={padding}/>
+    })}
+  </div>
+  */
+  JSXExpressionContainer(jsxContainerPath) {
+    if (isJSXAttribute(jsxContainerPath.parentPath.node)) return
+
+    jsxContainerPath.traverse({
+      CallExpression: (callExprPath) => {
+        traverseExpressions(callExprPath)
       },
     })
   },
