@@ -1,39 +1,39 @@
 class ImportCollector {
   constructor() {
-    this.imports = new Map()
+    this.imports = new Map();
   }
 
   collectImport(specifierPath, importPath) {
-    if (specifierPath.node.local.name !== "px2Unit") return
+    if (specifierPath.node.local.name !== "px2Unit") return;
 
     if (!this.imports.has(importPath)) {
-      this.imports.set(importPath, [specifierPath])
+      this.imports.set(importPath, [specifierPath]);
     } else {
-      this.imports.get(importPath).push(specifierPath)
+      this.imports.get(importPath).push(specifierPath);
     }
   }
 
   removeUnusedImports() {
     this.imports.forEach((specifierPaths, importPath) => {
-      specifierPaths.forEach(specifierPath => {
+      specifierPaths.forEach((specifierPath) => {
         // refresh scope binding info
-        specifierPath.scope.crawl()
+        specifierPath.scope.crawl();
 
-        if (!specifierPath.node) return
+        if (!specifierPath.node) return;
 
-        const identifierName = specifierPath.get("local")?.node.name
-        const binding = specifierPath.scope.getBinding(identifierName)
-        if (binding && binding.referenced) return
+        const identifierName = specifierPath.get("local")?.node.name;
+        const binding = specifierPath.scope.getBinding(identifierName);
+        if (binding && binding.referenced) return;
 
-        specifierPath.remove()
+        specifierPath.remove();
 
-        const remainingSpecifiers = importPath.get("specifiers")
+        const remainingSpecifiers = importPath.get("specifiers");
         if (remainingSpecifiers.length === 0) {
-          importPath.remove()
+          importPath.remove();
         }
-      })
-    })
+      });
+    });
   }
 }
 
-module.exports = ImportCollector
+module.exports = ImportCollector;

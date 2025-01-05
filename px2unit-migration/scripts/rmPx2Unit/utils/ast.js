@@ -11,69 +11,70 @@ const {
   isLogicalExpression,
   templateLiteral,
   templateElement,
-} = require("@babel/types")
+} = require("@babel/types");
 
-const { STYLED_TAGS, VALID_UNARY_OPERATORS } = require("../constants.js")
+const { STYLED_TAGS, VALID_UNARY_OPERATORS } = require("../constants.js");
 
 // Handle cases like keyframes`...`
 // options: styled, css, createGlobalStyle, keyframes
-const isStyledIdentifier = (identifier) => STYLED_TAGS.includes(identifier.name)
+const isStyledIdentifier = (identifier) =>
+  STYLED_TAGS.includes(identifier.name);
 
 // Handle cases like styled.div`...`
 const isStyledMember = (member) => {
   if (isIdentifier(member.object)) {
-    return isStyledIdentifier(member.object)
+    return isStyledIdentifier(member.object);
   }
 
   if (isMemberExpression(member.object)) {
-    return isStyledMember(member.object)
+    return isStyledMember(member.object);
   }
 
-  return false
-}
+  return false;
+};
 
 // Handle cases like styled(Component)`...`
 const isStyledFunction = (callExpression) => {
-  const { callee } = callExpression
+  const { callee } = callExpression;
   if (isIdentifier(callee)) {
-    return isStyledIdentifier(callee)
+    return isStyledIdentifier(callee);
   }
 
   if (isMemberExpression(callee)) {
-    return isStyledMember(callee)
+    return isStyledMember(callee);
   }
 
   if (isCallExpression(callee)) {
-    return isStyledFunction(callee)
+    return isStyledFunction(callee);
   }
 
-  return false
-}
+  return false;
+};
 
 // General check for styled components
 const isStyledTag = (taggedTemplateLiteral) => {
-  const { tag } = taggedTemplateLiteral.node || taggedTemplateLiteral || {}
+  const { tag } = taggedTemplateLiteral.node || taggedTemplateLiteral || {};
 
   if (!tag) {
-    return false
+    return false;
   }
 
   if (isIdentifier(tag)) {
-    return isStyledIdentifier(tag)
+    return isStyledIdentifier(tag);
   }
 
   if (isMemberExpression(tag)) {
-    return isStyledMember(tag)
+    return isStyledMember(tag);
   }
 
   if (isCallExpression(tag)) {
-    return isStyledFunction(tag)
+    return isStyledFunction(tag);
   }
 
-  return false
-}
+  return false;
+};
 
-const isPureExpression = (expression) => (
+const isPureExpression = (expression) =>
   // margin: ${size}px
   isIdentifier(expression) ||
   // margin: ${getSize()}px
@@ -87,19 +88,20 @@ const isPureExpression = (expression) => (
   // margin: ${obj?.size}px
   isOptionalMemberExpression(expression) ||
   // margin: ${a && b}px
-  isLogicalExpression(expression)
-)
+  isLogicalExpression(expression);
 
 const isPureLiteral = (expression) => {
-  if (isUnaryExpression(expression) && VALID_UNARY_OPERATORS.includes(expression.operator)) {
-    return isNumericLiteral(expression.argument)
+  if (
+    isUnaryExpression(expression) &&
+    VALID_UNARY_OPERATORS.includes(expression.operator)
+  ) {
+    return isNumericLiteral(expression.argument);
   }
 
-  return isNumericLiteral(expression) || isStringLiteral(expression)
-}
+  return isNumericLiteral(expression) || isStringLiteral(expression);
+};
 
-const isPx2UnitCall = (expression) =>
-  expression.callee?.name === "px2Unit"
+const isPx2UnitCall = (expression) => expression.callee?.name === "px2Unit";
 
 const createTemplateLiteral = (expression) =>
   templateLiteral(
@@ -108,7 +110,7 @@ const createTemplateLiteral = (expression) =>
       templateElement({ raw: "px", cooked: "px" }, true),
     ],
     [expression],
-  )
+  );
 
 module.exports = {
   isStyledTag,
@@ -116,4 +118,4 @@ module.exports = {
   isPureLiteral,
   isPx2UnitCall,
   createTemplateLiteral,
-}
+};

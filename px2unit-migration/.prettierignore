@@ -5,7 +5,7 @@
 
 # testing
 /coverage
-
+/scripts/rmPx2Unit/__tests__/fixtures
 # next.js
 /.next/
 /out/

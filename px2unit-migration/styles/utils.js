@@ -24,4 +24,3 @@ export const widthUnit = (pixel) => {
 export const heightUnit = (pixel) => {
   return `height: ${px2Unit(pixel)};`;
 };
-

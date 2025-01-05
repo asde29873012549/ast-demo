@@ -1,7 +1,7 @@
-const recast = require("recast")
-const babelParser = require("@babel/parser")
+const recast = require("recast");
+const babelParser = require("@babel/parser");
 
-const parseCodeToAST = (code) => 
+const parseCodeToAST = (code) =>
   recast.parse(code, {
     parser: {
       parse(source) {
@@ -9,9 +9,9 @@ const parseCodeToAST = (code) =>
           sourceType: "module",
           plugins: ["jsx"],
           tokens: true,
-        })
-      }
-    }
-  })
+        });
+      },
+    },
+  });
 
-module.exports = parseCodeToAST
+module.exports = parseCodeToAST;
