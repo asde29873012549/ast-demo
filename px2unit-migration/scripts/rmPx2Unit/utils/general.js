@@ -76,7 +76,7 @@ const execute = {
       const eslintArgs = [
         "eslint",
         "--fix",
-        ...paths.map((path) => `${path}/**`),
+        ...paths.map((path) => `"${path}/**/*"`),
       ];
       spawn("npx", eslintArgs, {
         stdio: "inherit",
