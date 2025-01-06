@@ -8,7 +8,7 @@ const {
   CSS_PROPERTY_PLACEHOLDER,
   CSS_PAIR_REGEX,
   PX_REGEX,
-  PX_REGEX_GLOBAL
+  PX_REGEX_GLOBAL,
 } = require("./constants");
 
 const process = (cssContent) => {
@@ -16,7 +16,7 @@ const process = (cssContent) => {
     tags,
     multiplier,
     transformRuntime,
-    transformJSXAttribute,
+    transformJSX,
     rootValue,
     ...others
   } = Config.getConfig();
@@ -53,14 +53,14 @@ const replacePxToRemInCss = (cssContent, retry = 2) => {
     }
 
     if (retry > 0) {
-      return cssContent
-        .replaceAll(PX_REGEX_GLOBAL, (_, captureGroup) => replacePxToRemInCss(captureGroup, retry - 1));
+      return cssContent.replaceAll(PX_REGEX_GLOBAL, (_, captureGroup) =>
+        replacePxToRemInCss(captureGroup, retry - 1),
+      );
     }
 
-    console.error('Error replacing px to rem in css content:', cssContent);
+    console.error("Error replacing px to rem in css content:", cssContent);
     return cssContent;
   }
 };
 
 module.exports = replacePxToRemInCss;
-

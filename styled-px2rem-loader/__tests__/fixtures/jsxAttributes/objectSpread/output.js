@@ -1,7 +1,9 @@
-<div
-  style={{
-    ...baseStyles,
-    padding: "5.333rem",
-    ...overrideStyles,
-  }}
-/>;
+const Component = () => (
+  <div
+    style={{
+      ...baseStyles,
+      padding: "5.333rem",
+      ...overrideStyles,
+    }}
+  />
+);

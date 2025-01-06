@@ -13,4 +13,14 @@ const Interpolation = styled.div`
   &:hover {
     transform: scale(1.05) translateX(6px);
   }
+
+  ${({ theme, size }) => theme.isMobile ? `
+    padding: ${size || 16}px;
+    margin: ${theme.spacing.small}px;
+    font-size: 14px;
+  ` : `
+    padding: ${size || 24}px;
+    margin: ${theme.spacing.large}px;
+    font-size: 16px;
+  `}
 `;

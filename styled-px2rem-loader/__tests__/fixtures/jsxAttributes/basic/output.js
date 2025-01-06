@@ -1,1 +1,1 @@
-<div width="26.667rem" />;
+const Component = () => <div width="26.667rem" />;

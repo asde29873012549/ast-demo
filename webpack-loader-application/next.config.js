@@ -15,7 +15,7 @@ const nextConfig = {
         rootValue: 3.75,
         unitPrecision: 2,
         transformRuntime: true,
-        transformJSXAttribute: true,
+        transformJSX: true,
       }
     });
     return config;

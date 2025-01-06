@@ -30,4 +30,19 @@ const NestedComponent = styled.div`
   }}
   
   ${absolute({ top: "3px", left: "2px", zIndex: 1 })};
+
+  width: ${props => {
+    const baseSize = 16;
+    return props.expanded ? `${baseSize * 2}px` : `${baseSize}px`;
+  }};
+  
+  height: ${props => props.compact 
+    ? `${props.size / 2}px` 
+    : `${props.size * 2}px`
+  };
+
+  gap: ${props => props.gap > 20 ? `${props.gap}px` : '0'};
+  grid-template-columns: ${props => 
+    props.columns.map(width => `${width}px`).join(' ')
+  };
 `;

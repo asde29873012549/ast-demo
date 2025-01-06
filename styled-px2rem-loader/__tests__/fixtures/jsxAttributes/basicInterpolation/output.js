@@ -1,4 +1,4 @@
-<div width={`${_px2rem(size)}`} />;
+const Component = () => <div width={`${_px2rem(size)}`} />;
 function _px2rem(input, ...args) {
     if (typeof input === 'function') return _px2rem(input(...args), ...args);
     var value = typeof input === 'string' ? parseFloat(input) : typeof input === 'number' ? input : 0;

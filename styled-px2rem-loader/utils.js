@@ -9,6 +9,11 @@ const {
   isNumericLiteral,
   isLogicalExpression,
   isOptionalMemberExpression,
+  isJSXElement,
+  isArrowFunctionExpression,
+  isFunctionDeclaration,
+  isFunctionExpression,
+  isBlockStatement,
 } = require("@babel/types");
 
 // Handle cases like keyframes`...`
@@ -33,7 +38,7 @@ const isStyledMember = (member) => {
 
 // Handle cases like styled(Component)`...`
 const isStyledFunction = (callExpression) => {
-  const { callee } = callExpression;
+  const { callee } = callExpression.node || callExpression || {};
   if (isIdentifier(callee)) {
     return isStyledIdentifier(callee);
   }
@@ -95,4 +100,51 @@ const isPureExpression = (expression) => {
   );
 };
 
-module.exports = { isStyledTag, isPureExpression };
+const getComponentName = (id) => {
+  return id && isIdentifier(id) ? id.name : null;
+};
+
+const isReturnJSX = (blockStatementPath) => {
+  let hasJSX = false;
+  blockStatementPath.traverse({
+    ReturnStatement(path) {
+      const argument = path.get("argument");
+      if (isJSXElement(argument)) {
+        hasJSX = true;
+      }
+    },
+  });
+  return hasJSX;
+};
+
+const isReactComponent = (id, path) => {
+  // early check for valid component name before expensive traversal
+  const componentName = getComponentName(id);
+  if (!componentName || componentName[0] !== componentName[0].toUpperCase())
+    return false;
+
+  const bodyPath = path.get("body");
+
+  // Arrow function component
+  if (isArrowFunctionExpression(path.node)) {
+    return (
+      isJSXElement(bodyPath.node) ||
+      (isBlockStatement(bodyPath.node) && isReturnJSX(bodyPath))
+    );
+  }
+
+  // Regular function component
+  if (isFunctionDeclaration(path.node) || isFunctionExpression(path.node)) {
+    return isReturnJSX(bodyPath);
+  }
+
+  return false;
+};
+
+module.exports = {
+  isStyledTag,
+  isStyledFunction,
+  isPureExpression,
+  isReturnJSX,
+  isReactComponent,
+};

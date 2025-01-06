@@ -1,9 +1,13 @@
-<div
-  style={{
-    padding: `${_px2rem(size)}`,
-    margin: `${_px2rem(margin)} ${_px2rem(padding)}`,
-  }}
-/>;
+/* eslint-disable */
+const Component = () => (
+  <div>
+    {data.map((item) => {
+      const margin = "3.2rem"
+      const padding = `${_px2rem(item.paddingLeft)} ${_px2rem(item.paddingRight)}`
+      return <div margin={margin} padding={padding}/>
+    })}
+  </div>
+)
 function _px2rem(input, ...args) {
   if (typeof input === 'function') return _px2rem(input(...args), ...args);
   var value = typeof input === 'string' ? parseFloat(input) : typeof input === 'number' ? input : 0;

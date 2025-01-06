@@ -1,5 +1,4 @@
 const {
-  isTemplateElement,
   isConditionalExpression,
   isBlockStatement,
   isArrowFunctionExpression,

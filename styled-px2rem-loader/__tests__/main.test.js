@@ -3,6 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const babel = require("@babel/core");
 
+const Config = require("../config");
+
 const extractDirectory = (dir) => {
   if (!fs.existsSync(dir)) {
     throw new Error(`${dir} does not exist`);
@@ -22,6 +24,10 @@ const transformJSX = (code) => {
 };
 
 const fixtureDir = path.resolve(__dirname, "fixtures");
+
+beforeEach(() => {
+  Config.resetConfig();
+});
 
 extractDirectory(fixtureDir).forEach((suite) => {
   describe(suite, () => {

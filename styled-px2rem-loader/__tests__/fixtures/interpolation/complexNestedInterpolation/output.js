@@ -30,6 +30,21 @@ const NestedComponent = styled.div`
   }}
   
   ${absolute({ top: "0.8rem", left: "0.533rem", zIndex: 1 })};
+
+  width: ${props => {
+    const baseSize = 16;
+    return props.expanded ? `${_px2rem(baseSize * 2)}` : `${_px2rem(baseSize)}`;
+  }};
+  
+  height: ${props => props.compact 
+    ? `${_px2rem(props.size / 2)}` 
+    : `${_px2rem(props.size * 2)}`
+  };
+
+  gap: ${props => props.gap > 20 ? `${_px2rem(props.gap)}` : '0'};
+  grid-template-columns: ${props => 
+    props.columns.map(width => `${_px2rem(width)}`).join(' ')
+  };
 `;
 function _px2rem(input, ...args) {
   if (typeof input === 'function') return _px2rem(input(...args), ...args);

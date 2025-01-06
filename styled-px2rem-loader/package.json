@@ -1,8 +1,15 @@
 {
   "name": "styled-px2rem-loader",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A webpack loader that converts px to rem at buildtime",
-  "keywords": ["webpack", "loader", "px2rem", "rem", "css", "styled-components"],
+  "keywords": [
+    "webpack",
+    "loader",
+    "px2rem",
+    "rem",
+    "css",
+    "styled-components"
+  ],
   "homepage": "https://github.com/asde29873012549/ast-demo/styled-px2rem-loader",
   "main": "index.js",
   "scripts": {

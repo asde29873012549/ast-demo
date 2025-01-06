@@ -14,7 +14,7 @@ class Config {
     tags: ["styled", "css", "createGlobalStyle", "keyframes"],
     multiplier: 1,
     transformRuntime: false,
-    transformJSXAttribute: false,
+    transformJSX: false,
   });
 
   #config = Config.defaultConfig;
@@ -40,6 +40,10 @@ class Config {
     this.#config = Object.assign({}, this.#config, config);
 
     return this.getConfig();
+  }
+
+  resetConfig() {
+    this.#config = Config.defaultConfig;
   }
 }
 

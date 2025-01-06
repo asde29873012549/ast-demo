@@ -42,7 +42,7 @@ module.exports = (fixture, options = {}) => {
                 rootValue: 3.75,
                 unitPrecision: 3,
                 transformRuntime: true,
-                transformJSXAttribute: false,
+                transformJSX: false,
                 ...options,
               },
             },

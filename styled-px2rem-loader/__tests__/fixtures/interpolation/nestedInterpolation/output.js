@@ -4,6 +4,14 @@ const NestedInterpolation = styled.div`
       margin: ${_px2rem(props.margin)};
     `}
   `}
+
+  ${StyledButton} {
+    margin: 2.133rem;
+    
+    &:hover {
+      padding: ${props => props.compact ? "1.067rem" : "2.133rem"};
+    }
+  }
 `;
 function _px2rem(input, ...args) {
   if (typeof input === 'function') return _px2rem(input(...args), ...args);

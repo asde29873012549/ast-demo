@@ -13,6 +13,16 @@ const Interpolation = styled.div`
   &:hover {
     transform: scale(1.05) translateX(1.6rem);
   }
+
+  ${({ theme, size }) => theme.isMobile ? `
+    padding: ${_px2rem(size || 16)};
+    margin: ${_px2rem(theme.spacing.small)};
+    font-size: 3.733rem;
+  ` : `
+    padding: ${_px2rem(size || 24)};
+    margin: ${_px2rem(theme.spacing.large)};
+    font-size: 4.267rem;
+  `}
 `;
 function _px2rem(input, ...args) {
   if (typeof input === 'function') return _px2rem(input(...args), ...args);

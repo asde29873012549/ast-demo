@@ -26,4 +26,4 @@ const createTemplateVisitor = (config, transformRuntime) => ({
     : {}),
 });
 
-module.exports = createTemplateVisitor;
+module.exports = { createTemplateVisitor };

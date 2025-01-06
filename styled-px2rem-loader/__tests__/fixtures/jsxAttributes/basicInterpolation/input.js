@@ -1,1 +1,1 @@
-<div width={`${size}px`} />;
+const Component = () => <div width={`${size}px`} />;
