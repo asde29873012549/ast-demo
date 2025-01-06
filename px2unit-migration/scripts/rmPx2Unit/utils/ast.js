@@ -11,6 +11,7 @@ const {
   isLogicalExpression,
   templateLiteral,
   templateElement,
+  stringLiteral,
 } = require("@babel/types");
 
 const { STYLED_TAGS, VALID_UNARY_OPERATORS } = require("../constants.js");
@@ -35,7 +36,7 @@ const isStyledMember = (member) => {
 
 // Handle cases like styled(Component)`...`
 const isStyledFunction = (callExpression) => {
-  const { callee } = callExpression;
+  const { callee } = callExpression.node || callExpression || {};
   if (isIdentifier(callee)) {
     return isStyledIdentifier(callee);
   }
@@ -112,10 +113,29 @@ const createTemplateLiteral = (expression) =>
     [expression],
   );
 
+const getPx2UnitReplacementNode = (arg) => {
+  if (arg === undefined || arg === null) {
+    return stringLiteral("0px");
+  }
+
+  if (isNumericLiteral(arg)) {
+    return stringLiteral(`${arg.value}px`);
+  }
+
+  if (isUnaryExpression(arg)) {
+    return stringLiteral(`${arg.operator}${arg.argument.value}px`);
+  }
+
+  return createTemplateLiteral(arg);
+};
+
+
 module.exports = {
   isStyledTag,
+  isStyledFunction,
   isPureExpression,
   isPureLiteral,
   isPx2UnitCall,
   createTemplateLiteral,
+  getPx2UnitReplacementNode
 };

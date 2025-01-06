@@ -1,2 +1,2 @@
 /* eslint-disable */
-<div style={{ padding: px2Unit(16), margin: px2Unit(8) }} />
+const Component = () => <div style={{ padding: px2Unit(16), margin: px2Unit(8) }} />;

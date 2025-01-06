@@ -1,2 +1,3 @@
 /* eslint-disable */
-<div width={px2Unit(100)} />
+const Component = () => <div width={px2Unit(100)} />;
+

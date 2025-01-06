@@ -1,7 +1,5 @@
 const {
-  isNumericLiteral,
   isCallExpression,
-  stringLiteral,
   isUnaryExpression,
 } = require("@babel/types");
 
@@ -9,10 +7,10 @@ const {
   isPureLiteral,
   isPureExpression,
   isPx2UnitCall,
-  createTemplateLiteral,
+  getPx2UnitReplacementNode
 } = require("../utils/ast.js");
 
-const transformDirectPx2UnitCall = (
+const transformTemplatePx2UnitCall = (
   exprPath,
   quasiPath,
   prevQuasi,
@@ -68,22 +66,6 @@ const transformDirectPx2UnitCall = (
 
 // set maxDepth to avoid stack overflow caused by mutual recursion
 function traverseExpressions(expressionPath, maxDepth = 10) {
-  const getReplacementNode = (arg) => {
-    if (arg === undefined || arg === null) {
-      return stringLiteral("0");
-    }
-
-    if (isNumericLiteral(arg)) {
-      return stringLiteral(`${arg.value}px`);
-    }
-
-    if (isUnaryExpression(arg)) {
-      return stringLiteral(`${arg.operator}${arg.argument.value}px`);
-    }
-
-    return createTemplateLiteral(arg);
-  };
-
   expressionPath.traverse({
     CallExpression: (callExprPath) => {
       if (!isPx2UnitCall(callExprPath.node)) return;
@@ -99,7 +81,7 @@ function traverseExpressions(expressionPath, maxDepth = 10) {
         // Replace px2Unit call with either:
         // 1. A string literal with 'px' suffix for numeric values (e.g. "10px")
         // 2. A template literal for dynamic values (e.g. `${width}px`)
-        callExprPath.replaceWith(getReplacementNode(arg));
+        callExprPath.replaceWith(getPx2UnitReplacementNode(arg));
       }
     },
   });
@@ -118,7 +100,7 @@ function transformTemplate(templateLiteralPath, maxDepth = 10) {
     const quasiPath = templateLiteralPath.get(`quasis.${i + 1}`);
 
     if (isCallExpression(expr) && isPx2UnitCall(expr)) {
-      transformDirectPx2UnitCall(expressionPath, quasiPath, quasis[i], quasi);
+      transformTemplatePx2UnitCall(expressionPath, quasiPath, quasis[i], quasi);
     } else {
       if (maxDepth < 0)
         throw new Error("Max depth reached in transformTemplate call");
@@ -127,8 +109,4 @@ function transformTemplate(templateLiteralPath, maxDepth = 10) {
   }
 }
 
-module.exports = {
-  transformTemplate,
-  transformDirectPx2UnitCall,
-  traverseExpressions,
-};
+module.exports = { transformTemplate, traverseExpressions };

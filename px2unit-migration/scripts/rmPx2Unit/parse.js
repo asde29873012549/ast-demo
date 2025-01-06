@@ -9,6 +9,7 @@ const parseCodeToAST = (code) =>
           sourceType: "module",
           plugins: ["jsx"],
           tokens: true,
+          createParenthesizedExpressions: true,
         });
       },
     },

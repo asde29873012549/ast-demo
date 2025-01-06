@@ -1,1 +1,2 @@
-<Input width={px2Unit(0)} />
+/* eslint-disable */
+const Component = () => <Input width={px2Unit(0)} />;
