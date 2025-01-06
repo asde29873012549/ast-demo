@@ -15,7 +15,7 @@ const process = (cssContent) => {
     tags,
     multiplier,
     transformRuntime,
-    transformJSXAttribute,
+    transformJSX,
     rootValue,
     ...others
   } = Config.getConfig();

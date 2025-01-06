@@ -45,7 +45,7 @@ module.exports = declare((api, options) => {
           },
 
           JSXAttribute(jsxAttributePath) {
-            if (!config.transformJSXAttribute) return;
+            if (!config.transformJSX) return;
             jsxAttributePath.traverse(templateVisitor);
           }
         });
