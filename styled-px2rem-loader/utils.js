@@ -120,7 +120,7 @@ const isReturnJSX = (blockStatementPath) => {
 const isReactComponent = (id, path) => {
   // early check for valid component name before expensive traversal
   const componentName = getComponentName(id);
-  if (!componentName || componentName[0] !== componentName[0].toUpperCase())
+  if (!componentName || componentName[0] !== componentName[0].toUpperCase() || !path?.node)
     return false;
 
   const bodyPath = path.get("body");

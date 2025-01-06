@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.1] - 2025-01-06
+
+### Fixed
+
+- Fix for uninitialized variable that cause path.node to be null
+
 ## [1.1.0] - 2025-01-05
 
 ### Added
