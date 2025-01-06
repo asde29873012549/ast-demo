@@ -41,6 +41,10 @@ class Config {
 
     return this.getConfig();
   }
+
+  resetConfig() {
+    this.#config = Config.defaultConfig;
+  }
 }
 
 module.exports = new Config();

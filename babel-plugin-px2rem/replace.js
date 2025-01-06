@@ -8,6 +8,7 @@ const {
   CSS_PROPERTY_PLACEHOLDER,
   CSS_PAIR_REGEX,
   PX_REGEX,
+  PX_REGEX_GLOBAL,
 } = require("./constants");
 
 const process = (cssContent) => {
@@ -25,16 +26,16 @@ const process = (cssContent) => {
   ]).process(cssContent, { syntax: scss }).css;
 };
 
-const replacePxToRemInCss = (cssContent, retry = 1) => {
+const replacePxToRemInCss = (cssContent, retry = 2) => {
   try {
-    // handle cases like padding: 10px 20px;
+    // pair css-property: {value}px
     if (CSS_PAIR_REGEX.test(cssContent)) {
       return process(
         `${CSS_OPENING_PLACEHOLDER}${cssContent}${CSS_CLOSING_PLACEHOLDER}`,
       )
         .replace(CSS_OPENING_PLACEHOLDER, "")
         .replace(CSS_CLOSING_PLACEHOLDER, "");
-      // handle cases like transform: translateX(10px);
+      // pair only {value}px
     } else if (PX_REGEX.test(cssContent)) {
       return process(`${CSS_PROPERTY_PLACEHOLDER}${cssContent}`).replace(
         CSS_PROPERTY_PLACEHOLDER,
@@ -44,10 +45,20 @@ const replacePxToRemInCss = (cssContent, retry = 1) => {
       return cssContent;
     }
   } catch (error) {
-    // retry with split and join
-    if (retry > 0) {
-      return cssContent.split(";").map((css) => replacePxToRemInCss(css, retry - 1)).join(";");
+    if (retry > 1) {
+      return cssContent
+        .split(";")
+        .map((css) => replacePxToRemInCss(css, retry - 1))
+        .join(";");
     }
+
+    if (retry > 0) {
+      return cssContent.replaceAll(PX_REGEX_GLOBAL, (_, captureGroup) =>
+        replacePxToRemInCss(captureGroup, retry - 1),
+      );
+    }
+
+    console.error("Error replacing px to rem in css content:", cssContent);
     return cssContent;
   }
 };

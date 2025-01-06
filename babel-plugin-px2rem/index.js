@@ -1,8 +1,9 @@
 const { declare } = require('@babel/helper-plugin-utils');
+
 const Config = require('./config');
-const { isStyledTag } = require('./utils');
+const { isStyledTag, isStyledFunction, isReactComponent } = require('./utils');
 const px2remFn = require('./px2remFn');
-const createTemplateVisitor = require('./visitors/templateVisitor');
+const { createTemplateVisitor } = require('./visitors/templateVisitor');
 const ExpressionTransformer = require('./transforms/expressionTransformer');
 const RuntimeTransformer = require('./transforms/runtimeTransformer');
 
@@ -34,20 +35,36 @@ module.exports = declare((api, options) => {
         );
 
         programPath.traverse({
+          // styled-components transform
           TaggedTemplateExpression(taggedTemplatePath) {
             if (!isStyledTag(taggedTemplatePath)) return;
             taggedTemplatePath.traverse(templateVisitor);
           },
 
           CallExpression(callExpressionPath) {
-            if (!isStyledTag(callExpressionPath)) return;
+            if (!isStyledFunction(callExpressionPath)) return;
             callExpressionPath.traverse(templateVisitor);
           },
 
-          JSXAttribute(jsxAttributePath) {
-            if (!config.transformJSX) return;
-            jsxAttributePath.traverse(templateVisitor);
-          }
+          // React component transform
+          ...(config.transformJSX
+            ? {
+                VariableDeclaration(variableDeclarationPath) {
+                  const [declarationPath] =
+                    variableDeclarationPath.get("declarations");
+                  const initPath = declarationPath.get("init");
+                  const { id } = declarationPath.node;
+                  if (!isReactComponent(id, initPath)) return;
+                  initPath.traverse(templateVisitor);
+                },
+
+                FunctionDeclaration(functionDeclarationPath) {
+                  const { id } = functionDeclarationPath.node;
+                  if (!isReactComponent(id, functionDeclarationPath)) return;
+                  functionDeclarationPath.traverse(templateVisitor);
+                },
+              }
+            : {}),
         });
       }
     }

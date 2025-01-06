@@ -3,8 +3,9 @@ const CSS_CLOSING_PLACEHOLDER = "} /* px2rem closing placeholder */";
 const CSS_PROPERTY_PLACEHOLDER =
   "/* start: px2rem property placeholder */ padding: /* end: px2rem property placeholder */";
 
-const CSS_PAIR_REGEX = /[\s\w-]+:([\s-\d]+px)+/;
-const PX_REGEX = /(?<![\w-])(-)?(\d*\.?\d+)px\b/;
+const CSS_PAIR_REGEX = /[\s\w-]+:\s*(-?\d*\.?\d+)px/;
+const PX_REGEX = /(?<![\w-])(-?\d*\.?\d+\s*px)\b/;
+const PX_REGEX_GLOBAL = /(?<![\w-])(-?\d*\.?\d+\s*px)\b/g;
 
 module.exports = {
   CSS_OPENING_PLACEHOLDER,
@@ -12,4 +13,5 @@ module.exports = {
   CSS_PROPERTY_PLACEHOLDER,
   CSS_PAIR_REGEX,
   PX_REGEX,
+  PX_REGEX_GLOBAL,
 };

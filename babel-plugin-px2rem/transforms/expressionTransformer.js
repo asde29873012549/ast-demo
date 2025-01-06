@@ -1,5 +1,4 @@
 const {
-  isTemplateElement,
   isConditionalExpression,
   isBlockStatement,
   isArrowFunctionExpression,
@@ -9,9 +8,9 @@ const {
   restElement,
   spreadElement,
   identifier,
-} = require('@babel/types');
+} = require("@babel/types");
 
-const { isPureExpression } = require('../utils');
+const { isPureExpression } = require("../utils");
 
 class ExpressionTransformer {
   constructor(px2rem) {
@@ -28,23 +27,25 @@ class ExpressionTransformer {
     const { body } = expression;
 
     if (isBlockStatement(body)) {
-      expression.body = this.createPx2RemCall(arrowFunctionExpression([], body));
+      expression.body = this.createPx2RemCall(
+        arrowFunctionExpression([], body),
+      );
       return expression;
     }
-    
+
     if (isPureExpression(body)) {
       expression.body = this.createPx2RemCall(body);
       return expression;
     }
-    
+
     expression.body = this.insertPx2RemCall(body);
     return expression;
   }
 
   wrapFunctionWithPx2Rem(expression) {
     return arrowFunctionExpression(
-      [restElement(identifier('args'))],
-      this.createPx2RemCall(expression, spreadElement(identifier('args')))
+      [restElement(identifier("args"))],
+      this.createPx2RemCall(expression, spreadElement(identifier("args"))),
     );
   }
 
