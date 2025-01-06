@@ -1,12 +1,13 @@
 # styled-px2rem-loader
 
-A Webpack loader for automatically converting px units to rem in styled-components.
+A Webpack loader for automatically converting px units to rem in styled-components and React components.
 
 ## Features
 
 - Converts px values to rem at build time
 - Supports styled-components template literals
 - Handles dynamic expressions and nested interpolations
+- Supports React components JSX transformations
 - Configurable conversion options
 - Integrates seamlessly with Webpack
 
@@ -41,6 +42,7 @@ module.exports = {
               multiplier: 1, // Multiplication factor for conversion
               transformRuntime: false, // Enable runtime transformation
               mediaQuery: false, // Enable media query conversion
+              transformJSX: true, // Enable JSX transformation
             },
           },
         ],
@@ -52,6 +54,7 @@ module.exports = {
 
 ## Example
 
+### Styled Components
 ```javascript
 // Before
 const Button = styled.button`
@@ -64,23 +67,23 @@ const Button = styled.button`
   padding: 0.625rem; // 10px converted to rem
   margin: ${_px2rem((props) => props.margin)}; // Dynamic margin conversion
 `;
+```
 
-function _px2rem(input, ...args) {
-  if (typeof input === "function") return _px2rem(input(...args), ...args);
-  var value =
-    typeof input === "string"
-      ? parseFloat(input)
-      : typeof input === "number"
-        ? input
-        : 0;
-  var pixels = Number.isNaN(value) ? 0 : value;
-  if (Math.abs(pixels) < 0) return pixels + "px";
-  var mul = Math.pow(10, 3 + 1);
-  return (
-    (Math.round(Math.floor(((pixels * 1) / 3.75) * mul) / 10) * 10) / mul +
-    "rem"
-  );
-}
+### React Components
+```javascript
+// Before
+const Component = () => (
+  <div style={{ padding: "16px", margin: `${size}px` }}>
+    <span margin="16px" />
+  </div>
+);
+
+// After transformation
+const Component = () => (
+  <div style={{ padding: "1rem", margin: `${_px2rem(size)}` }}>
+    <span margin="4.267px" />
+  </div>
+);
 ```
 
 ## Configuration Options
@@ -103,7 +106,10 @@ function _px2rem(input, ...args) {
   "transformRuntime": false,
 
   // Enable media query conversion
-  "mediaQuery": false
+  "mediaQuery": false,
+
+  // Enable JSX style transformation
+  "transformJSX": true
 }
 ```
 
@@ -115,12 +121,13 @@ function _px2rem(input, ...args) {
 
 ## How It Works
 
-The loader processes styled-components template literals and:
+The loader can process both styled-components template literals and React component styles:
 
-1. Identifies px values in CSS properties.
-2. Converts static px values to rem at build time.
-3. Transforms dynamic expressions to include rem conversion.
-4. Preserves other CSS properties and values.
+1. Identifies px values in CSS properties and JSX style attributes
+2. Converts static px values to rem at build time
+3. Transforms dynamic expressions to include rem conversion
+4. Preserves other CSS properties and values
+5. Handles React component px transformations when enabled
 
 ## License
 

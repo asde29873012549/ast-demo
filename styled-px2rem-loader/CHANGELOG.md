@@ -2,6 +2,10 @@
 
 ## [1.1.1] - 2025-01-06
 
+### Added
+
+- Modified README to clarify the loader's functionality and configuration options
+
 ### Fixed
 
 - Fix for uninitialized variable that cause path.node to be null
