@@ -108,6 +108,9 @@ const Component = () => (
   // Multiplication factor for conversion
   "multiplier": 1,
 
+  // styled-components tags to transform
+  "tags": ["styled", "css", "createGlobalStyle", "keyframes"],
+
   // Enable runtime transformation
   "transformRuntime": false,
 
@@ -115,7 +118,7 @@ const Component = () => (
   "mediaQuery": false,
 
   // Enable JSX style transformation
-  "transformJSX": true
+  "transformJSX": false
 }
 ```
 

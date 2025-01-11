@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1] - 2025-01-11
+
+### Added
+
+- Fix README.md default config example
+- Fix homepage link in package.json
+
 ## [1.2.0] - 2025-01-11
 
 ### Added
