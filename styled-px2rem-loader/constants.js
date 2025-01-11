@@ -7,6 +7,8 @@ const CSS_PAIR_REGEX = /[\s\w-]+:\s*(-?\d*\.?\d+)px/;
 const PX_REGEX = /(?<![\w-])(-?\d*\.?\d+\s*px)\b/;
 const PX_REGEX_GLOBAL = /(?<![\w-])(-?\d*\.?\d+\s*px)\b/g;
 
+const DISABLE_COMMENT_REGEX = /\s*styled-px2rem-disable\s*/;
+
 module.exports = {
   CSS_OPENING_PLACEHOLDER,
   CSS_CLOSING_PLACEHOLDER,
@@ -14,4 +16,5 @@ module.exports = {
   CSS_PAIR_REGEX,
   PX_REGEX,
   PX_REGEX_GLOBAL,
+  DISABLE_COMMENT_REGEX,
 };

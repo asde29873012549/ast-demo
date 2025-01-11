@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0] - 2025-01-11
+
+### Added
+
+- Support for suppressing transformations via comments
+- New `include` and `exclude` configuration options for selective file processing
+- Enhanced documentation for configuration options
+
 ## [1.1.1] - 2025-01-06
 
 ### Added

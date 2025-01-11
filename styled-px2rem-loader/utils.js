@@ -15,6 +15,7 @@ const {
   isFunctionExpression,
   isBlockStatement,
 } = require("@babel/types");
+const { DISABLE_COMMENT_REGEX } = require("./constants");
 
 // Handle cases like keyframes`...`
 const isStyledIdentifier = (identifier) => {
@@ -120,7 +121,11 @@ const isReturnJSX = (blockStatementPath) => {
 const isReactComponent = (id, path) => {
   // early check for valid component name before expensive traversal
   const componentName = getComponentName(id);
-  if (!componentName || componentName[0] !== componentName[0].toUpperCase() || !path?.node)
+  if (
+    !componentName ||
+    componentName[0] !== componentName[0].toUpperCase() ||
+    !path?.node
+  )
     return false;
 
   const bodyPath = path.get("body");
@@ -141,10 +146,20 @@ const isReactComponent = (id, path) => {
   return false;
 };
 
+const isFileDisabledByComment = (programPath) => {
+  const comments = programPath.node?.body[0]?.leadingComments || [];
+  const isCommentBlock = (node) => node.type === "CommentBlock";
+  return comments.some(
+    (comment) =>
+      isCommentBlock(comment) && DISABLE_COMMENT_REGEX.test(comment.value),
+  );
+};
+
 module.exports = {
   isStyledTag,
   isStyledFunction,
   isPureExpression,
   isReturnJSX,
   isReactComponent,
+  isFileDisabledByComment,
 };

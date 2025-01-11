@@ -3,7 +3,12 @@ const traverse = require("@babel/traverse").default;
 const generate = require("@babel/generator").default;
 
 const Config = require("./config");
-const { isStyledTag, isStyledFunction, isReactComponent } = require("./utils");
+const {
+  isStyledTag,
+  isStyledFunction,
+  isReactComponent,
+  isFileDisabledByComment,
+} = require("./utils");
 const px2remFn = require("./px2remFn");
 const { createTemplateVisitor } = require("./visitors/templateVisitor");
 const ExpressionTransformer = require("./transforms/expressionTransformer");
@@ -27,6 +32,9 @@ module.exports = function (source) {
         }
       },
       enter(programPath) {
+        // If the whole file is disabled by comment, skip the transformation
+        if (isFileDisabledByComment(programPath)) return;
+
         const px2remId = config.transformRuntime
           ? programPath.scope.generateUidIdentifier("px2rem")
           : undefined;

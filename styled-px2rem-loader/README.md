@@ -10,6 +10,8 @@ A Webpack loader for automatically converting px units to rem in styled-componen
 - Supports React components JSX transformations
 - Configurable conversion options
 - Integrates seamlessly with Webpack
+- Supports transformation suppression via comments
+- Selective file processing with include/exclude patterns
 
 ## Installation
 
@@ -35,6 +37,8 @@ module.exports = {
         use: [
           {
             loader: "styled-px2rem-loader",
+            include: [path.resolve(__dirname, "src")],
+            exclude: [path.resolve(__dirname, "src/files/to/exclude/")],
             options: {
               rootValue: 16, // Base font size for conversion
               unitPrecision: 5, // Decimal places in rem values
@@ -55,6 +59,7 @@ module.exports = {
 ## Example
 
 ### Styled Components
+
 ```javascript
 // Before
 const Button = styled.button`
@@ -70,6 +75,7 @@ const Button = styled.button`
 ```
 
 ### React Components
+
 ```javascript
 // Before
 const Component = () => (
@@ -112,6 +118,16 @@ const Component = () => (
   "transformJSX": true
 }
 ```
+
+## Suppressing Transformations
+
+You can suppress px-to-rem transformation by two methods:
+
+1. Add `/* styled-px2rem-disable */` to the top of the file and it will be disabled for the whole file. Just like how you would do it with eslint.
+
+2. Add files or directories to the `exclude` option in the Webpack configuration and all files specified in the `exclude` option will be ignored.
+
+- Suppression to single line is not supported yet, it may or may not be supported in the future, depends on the demand.
 
 ## Development
 
